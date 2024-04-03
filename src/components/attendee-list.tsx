@@ -3,16 +3,26 @@ import { IconButton } from "./icon-button";
 import { Table } from "./table/table";
 import { TableHeader } from "./table/table-header";
 import { TableCell } from "./table/table-cell";
+import { TableRow } from "./table/table-row";
+import { ChangeEvent, useState } from "react";
 
 export function AttendeeList() {
+  const [search, setSearch] = useState('')
+
+  function onSearchInputChanged(event: ChangeEvent<HTMLInputElement>) {
+    setSearch(event.target.value)
+    console.log('----> searchTerm', search)
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex gap-3 items-center">
         <h1 className="text-2xl font-bold">Participantes</h1>
         <div className="px-3 w-72 py-1.5 border border-white/10 rounded-lg flex items-center gap-3">
           <Search className="size-4 text-emerald-300"/>
-          <input className="bg-transparent flex-1 outline-none border-0 p-0 text-sm" placeholder="Buscar participante..." />
+          <input onChange={onSearchInputChanged} className="bg-transparent flex-1 outline-none border-0 p-0 text-sm" placeholder="Buscar participante..." />
         </div>
+        {search}
       </div>
 
       <Table>
@@ -32,7 +42,7 @@ export function AttendeeList() {
         <tbody className="border-b border-white/10">
           {Array.from({length: 8}).map((_, i) => {
             return (
-              <tr key={i} className="border-b border-white/10 hover:bg-white/5">
+              <TableRow key={i} className="border-b border-white/10 hover:bg-white/5">
                 <TableCell>
                   <input type="checkbox" className="size-4 bg-black/20 rounded border border-white/10 checked:text-orange-400" />
                 </TableCell>
@@ -50,7 +60,7 @@ export function AttendeeList() {
                     <MoreHorizontal />
                   </IconButton>
                 </TableCell>
-              </tr>
+              </TableRow>
             )
           })}
         </tbody>
